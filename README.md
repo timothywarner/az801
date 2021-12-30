@@ -52,37 +52,7 @@
 
 ## About
 
-> **[?]**
-> Provide general information about your project here.
-> What problem does it (intend to) solve?
-> What is the purpose of your project?
-> Why did you undertake it?
-> You don't have to answer all the questions -- just the ones relevant to your project.
-
-
-
-### Built With
-
-> **[?]**
-> Please provide the technologies that are used in the project.
-
-## Getting Started
-
-### Prerequisites
-
-> **[?]**
-> What are the project requirements/dependencies?
-
-### Installation
-
-> **[?]**
-> Describe how to install and get started with the project.
-
-## Usage
-
-> **[?]**
-> How does one go about using it?
-> Provide various use cases and code examples here.
+This is a six-hour instructor-led course that covers the [Exam AZ-800: Administering Windows Server Hybrid Core Infrastructure](https://docs.microsoft.com/en-us/learn/certifications/exams/az-800) certification exam objectives.
 
 ## Roadmap
 
@@ -94,13 +64,14 @@ See the [open issues](https://github.com/timothywarner/az801/issues) for a list 
 
 ## Support
 
-> **[?]**
-> Provide additional ways to contact the project maintainer/maintainers.
-
 Reach out to the maintainer at one of the following places:
 
 - [GitHub issues](https://github.com/timothywarner/az801/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)
 - Contact options listed on [this GitHub profile](https://github.com/timothywarner)
+- The email which is located [in GitHub profile](https://github.com/timothywarner)
+- [Twitter](http://twitter.com/techtrainertim)
+- [LinkedIn](https://www.linkedin.com/in/timothywarner)
+- [Website](https://techtrainertim.com/)
 
 ## Project assistance
 
@@ -138,8 +109,3 @@ This project is licensed under the **MIT license**.
 
 See [LICENSE](LICENSE) for more information.
 
-## Acknowledgements
-
-> **[?]**
-> If your work was funded by any organization or institution, acknowledge their support here.
-> In addition, if your work relies on other software libraries, or was inspired by looking at other work, it is appropriate to acknowledge this intellectual debt too.
