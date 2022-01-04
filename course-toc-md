@@ -1,0 +1,53 @@
+# AZ-801 TOC
+
+## DAY 1
+
+### SECURITY
+
+* AD admin groups and delegation
+* Fine-grained password policy
+* Azure AD password protection
+* Defender for Endpoint / Cloud
+* Sentinel integration
+* Defender Firewall
+  * Connection security rules
+* BitLocker
+  * Azure Disk Encryption
+
+### HIGH AVAILABILITY
+
+* Failover clustering
+  * Windows Admin Center
+* Cluster-aware updating
+* Azure witness
+* Floating IP / load balancing
+* Storage Spaces Direct
+
+### DISASTER RECOVERY
+
+* RS Vault / Backup Server
+* Azure Site Recovery
+* Hyper-V Replica
+
+### MIGRATION
+
+* Storage Migration Service
+* IIS WebDeploy
+* App Service hybrid connection
+* Azure Migrate
+* AD Migration Tool
+
+### MONITORING
+
+* AD Recycle Bin
+* Data Collector Sets
+* Windows Admin Center alerts
+* Log Analytics / Insights
+* Logic Apps
+
+### EXAM PREP
+
+* Item types
+* Exam protocol
+* Hands-on
+* Practice exams
