@@ -7,6 +7,7 @@
 * AD admin groups and delegation
 * Fine-grained password policy
 * Azure AD password protection
+* Onboard Azure Arc servers
 * Defender for Endpoint / Cloud
 * Sentinel integration
 * Defender Firewall
@@ -43,6 +44,7 @@
 * Data Collector Sets
 * Windows Admin Center alerts
 * Log Analytics / Insights
+* Onboard on-prem servers
 * Logic Apps
 
 ### EXAM PREP
