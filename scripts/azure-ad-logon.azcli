@@ -1,0 +1,21 @@
+# Configure Azure AD sign-in with CLI
+
+# Sign in and set up environment
+az login
+az account set --subscription "<azure-subscription-name>"
+
+# Enable Azure AD logon
+az vm extension set \
+    --publisher Microsoft.Azure.ActiveDirectory \
+    --name AADLoginForWindows \
+    --resource-group cloud-rg \
+    --vm-name rootdc3
+
+# Grant sign-in permissions
+$username=$(az account show --query user.name --output tsv)
+$vm=$(az vm show --resource-group cloud-rg --name rootdc3 --query id -o tsv)
+
+az role assignment create \
+    --role "Virtual Machine Administrator Login" \
+    --assignee $username \
+    --scope $vm
