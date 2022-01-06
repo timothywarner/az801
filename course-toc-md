@@ -19,6 +19,8 @@
 
 * Failover clustering
   * Windows Admin Center
+* Add disks to nodes
+  * Add to CSVs
 * Cluster-aware updating
 * Azure witness
 * Floating IP / load balancing
@@ -29,6 +31,14 @@
 * RS Vault / Backup Server
 * Azure Site Recovery
 * Hyper-V Replica
+
+
+
+
+
+
+
+## DAY 2
 
 ### MIGRATION
 
