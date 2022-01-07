@@ -26,12 +26,6 @@
 * Floating IP / load balancing
 * Storage Spaces Direct
 
-### DISASTER RECOVERY
-
-* RS Vault / Backup Server
-* Azure Site Recovery
-* Hyper-V Replica
-
 
 
 
@@ -40,21 +34,30 @@
 
 ## DAY 2
 
+### SHAVINGS
+
+* Sentinel
+* Load balancer / floating IP
+
+### DISASTER RECOVERY
+
+* AD Recycle Bin
+* RS Vault / Backup Server
+* Azure Site Recovery
+
 ### MIGRATION
 
-* Storage Migration Service
-* IIS WebDeploy
-* App Service hybrid connection
 * Azure Migrate
 * AD Migration Tool
+* Storage Migration Service
+* App Service hybrid connection
 
 ### MONITORING
 
-* AD Recycle Bin
 * Data Collector Sets
 * Windows Admin Center alerts
 * Log Analytics / Insights
-* Onboard on-prem servers
+  * Deploy agent to remote systems
 * Logic Apps
 
 ### EXAM PREP
