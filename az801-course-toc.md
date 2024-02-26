@@ -1,68 +1,46 @@
-# AZ-801 TOC
+# AZ-801: Implement and Manage Windows Servers Hybrid Advanced Services TOC (basically Tim's instructional notes)
 
-## DAY 1
+## Module 1: Securing Hybrid Environments
 
-### SECURITY
+- OS hardening
+- Exploit Protection, App Control, Credential Guard, SmartScreen
+- Group Policy (Key settings)
+- Hybrid AD DS
+- Password Policies, Password Protection, Blocklists, Protected Users, RODCs
+- Defender for Identity, Defender for Cloud, Sentinel
+- Defender Firewall, Domain Isolation, IPSec
+- Azure Arc for Servers
+- Hybrid Update, Management, Azure Policy
 
-* AD admin groups and delegation
-* Fine-grained password policy
-* Azure AD password protection
-* Onboard Azure Arc servers
-* Defender for Endpoint / Cloud
-* Sentinel integration
-* Defender Firewall
-  * Connection security rules
-* BitLocker
-  * Azure Disk Encryption
+## Module 2: High Availability & DR
 
-### HIGH AVAILABILITY
+- Failover Clustering
+- Types (On-prem, Hybrid, Cloud), Stretch, Quorum, Workloads
+- S2D
+- Backup
+- Recovery Services Vault, Azure Backup Server
+- Site Recovery
+- Concepts, Replication, Failover Plans
 
-* Failover clustering
-  * Windows Admin Center
-* Add disks to nodes
-  * Add to CSVs
-* Cluster-aware updating
-* Azure witness
-* Floating IP / load balancing
-* Storage Spaces Direct
+## Module 3: Workload Migration
 
+- Strategies
+- Lift-and-Shift, Rehost, etc.
+- Storage Migration Service
+- VM Migration
+- Azure Migrate (Assess, Migrate), P2V
+- Legacy Windows
+- Migration Paths
+- Azure Arc for Servers
+- Onboarding
 
+## Module 4:  Hybrid Monitoring & Troubleshooting
 
-
-
-
-
-## DAY 2
-
-### SHAVINGS
-
-* Sentinel
-* Load balancer / floating IP
-
-### DISASTER RECOVERY
-
-* AD Recycle Bin
-* RS Vault / Backup Server
-* Azure Site Recovery
-
-### MIGRATION
-
-* Azure Migrate
-* AD Migration Tool
-* Storage Migration Service
-* App Service hybrid connection
-
-### MONITORING
-
-* Data Collector Sets
-* Windows Admin Center alerts
-* Log Analytics / Insights
-  * Deploy agent to remote systems
-* Logic Apps
-
-### EXAM PREP
-
-* Item types
-* Exam protocol
-* Hands-on
-* Practice exams
+- Windows Monitoring
+- Perf Monitor, Data Collector Sets, Admin Center
+- Azure Monitoring
+- Agents, VM Insights, Diagnostics, Log Analytics (KQL)
+- Hybrid Network Troubleshooting
+- Azure VM Troubleshooting
+- AD Troubleshooting
+- Recycle Bin, Replication
