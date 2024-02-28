@@ -1,5 +1,5 @@
 param adminUsername string = 'tim'
-param adminPassword string = 'Agape112Agape112'
+param adminPassword string = ''
 param vmSize string = 'Standard_B2ms'
 param virtualNetworkId string = '/subscriptions/fc8d795a-57cf-4416-acb5-c4de5461a4bc/resourceGroups/az801-rg/providers/Microsoft.Network/virtualNetworks/az801-vnet'
 param subnetName string = 'domain'
