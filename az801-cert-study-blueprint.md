@@ -34,6 +34,7 @@
 ## Practice Exams
 
 * [MeasureUp](https://www.measureup.com/)
+* [Microsoft Cert Offers](https://learn.microsoft.com/en-us/credentials/certifications/deals)
 * [Whizlabs](https://www.whizlabs.com/)
 * [Udemy](https://www.udemy.com/)
 * [Tim's practice exam comparison video](https://www.youtube.com/watch?v=_aH4DbpcJWA&t=2s)
