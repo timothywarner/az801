@@ -1,6 +1,6 @@
 # Exam AZ-801: Configuring Windows Server Hybrid Advanced Services Live Online Training
 
-## Contact information
+## Tim's Contact information
 
 - [LinkedIn](https://www.linkedin.com/in/timothywarner/)
 - [Email](mailto:timothywarner316@gmail.com)
