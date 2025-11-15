@@ -5,6 +5,7 @@
 
 # Tim's entries
 *.code-workspace
+# *.pptx
 
 # User-specific files
 *.rsuser
