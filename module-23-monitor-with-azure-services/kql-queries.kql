@@ -1,0 +1,48 @@
+// Sample Kusto Queries
+// Get Kuskus VSCode extension
+
+Perf
+|
+
+Perf
+| where ObjectName == "Memory" and
+(CounterName == "Available MBytes Memory" or // the name used in Linux records
+CounterName == "Available MBytes") // the name used in Windows records
+|  summarize avg(CounterValue) by bin(TimeGenerated, 15min), Computer, _ResourceId // bin is used to set the time grain to 15 minutes
+| render timechart
+
+// Create an alert on this one
+Perf
+| where ObjectName == "Memory" and
+(CounterName == "Available MBytes Memory" or CounterName == "Available MBytes")
+| summarize avg(CounterValue) by bin(TimeGenerated, 15min), Computer, _ResourceId
+| where avg_CounterValue < 2000
+| project Computer, avg_CounterValue
+| order by avg_CounterValue asc
+
+// Show IIS 404 errors
+// Show 404 pages list.
+W3CIISLog
+| where scStatus == 404
+| summarize count() by csUriStem
+| sort by count_ desc
+
+// Demo a join
+SecurityEvent
+| where EventID == "4624"
+| summarize LogOnCount=count() by EventID, Account
+| project LogOnCount, Account
+| join kind = inner (
+     SecurityEvent
+     | where EventID == "4634"
+     | summarize LogOffCount=count() by EventID, Account
+     | project LogOffCount, Account
+) on Account
+
+// Missing critical security updates
+// Missing critical security updates
+// All computers that are missing critical updates or security updates.
+// To create an alert for this query, click '+ New alert rule'
+Update
+|where  OSType != "Linux" and UpdateState == "Needed" and Optional == "false" and (Classification == "Security Updates" or Classification == "Critical Updates")
+| sort by TimeGenerated desc
