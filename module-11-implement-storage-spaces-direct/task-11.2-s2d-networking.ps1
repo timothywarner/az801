@@ -3,13 +3,12 @@
     Task 11.2 - Configure S2D Networking
 
 .DESCRIPTION
-    Demo script for AZ-801 Module 11: Implement Storage Spaces Direct
-    Shows network configuration requirements for Storage Spaces Direct.
+    Network configuration for Storage Spaces Direct including SET, RDMA, and QoS.
 
 .NOTES
     Module: Module 11 - Implement Storage Spaces Direct
     Task: 11.2 - Configure S2D Networking
-    Prerequisites: Windows Server, Administrative privileges
+    Prerequisites: Storage Spaces Direct cluster
     PowerShell Version: 5.1+
 #>
 
@@ -17,47 +16,96 @@
 
 $ErrorActionPreference = 'Stop'
 Write-Host "=== AZ-801 Module 11: Task 11.2 - Configure S2D Networking ===" -ForegroundColor Cyan
-Write-Host ""
+
+function Write-Step { param([string]$Message); Write-Host "`n[STEP] $Message" -ForegroundColor Yellow }
 
 try {
-    Write-Host "[Step 1] Configure S2D Networking - Overview" -ForegroundColor Yellow
-    Write-Host "Shows network configuration requirements for Storage Spaces Direct." -ForegroundColor White
-    Write-Host ""
-    
-    Write-Host "[Step 2] Prerequisites Check" -ForegroundColor Yellow
-    Write-Host "Checking prerequisites for Configure S2D Networking..." -ForegroundColor Cyan
-    Write-Host "  - Administrative privileges: Verified" -ForegroundColor White
-    Write-Host "  - Required features: Ready" -ForegroundColor White
-    Write-Host "[SUCCESS] Prerequisites verified" -ForegroundColor Green
-    Write-Host ""
-    
-    Write-Host "[Step 3] Configuration Steps" -ForegroundColor Yellow
-    Write-Host "Configuring Configure S2D Networking..." -ForegroundColor Cyan
-    Write-Host "  Step 1: Review current configuration" -ForegroundColor White
-    Write-Host "  Step 2: Apply required settings" -ForegroundColor White
-    Write-Host "  Step 3: Verify configuration" -ForegroundColor White
-    Write-Host "[SUCCESS] Configuration steps outlined" -ForegroundColor Green
-    Write-Host ""
-    
-    Write-Host "[Step 4] Verification and Testing" -ForegroundColor Yellow
-    Write-Host "Verification steps:" -ForegroundColor Cyan
-    Write-Host "  - Test functionality" -ForegroundColor White
-    Write-Host "  - Verify expected behavior" -ForegroundColor White
-    Write-Host "  - Review logs and events" -ForegroundColor White
-    Write-Host ""
-    
-    Write-Host "[INFO] Best Practices:" -ForegroundColor Cyan
-    Write-Host "  - Regular monitoring and maintenance" -ForegroundColor White
-    Write-Host "  - Documentation of all changes" -ForegroundColor White
-    Write-Host "  - Testing in non-production environment" -ForegroundColor White
-    Write-Host "  - Following vendor recommendations" -ForegroundColor White
-    Write-Host ""
-    
+    Write-Step "S2D Network Requirements"
+    Write-Host "  - Minimum 10 GbE (25/100 GbE recommended)" -ForegroundColor White
+    Write-Host "  - RDMA support (iWARP, RoCE, or InfiniBand)" -ForegroundColor White
+    Write-Host "  - Dedicated storage network" -ForegroundColor White
+    Write-Host "  - Jumbo frames (MTU 9014)" -ForegroundColor White
+
+    Write-Step "Configure SET (Switch Embedded Teaming)"
+    Write-Host @"
+  # Create SET team for converged networking
+  New-VMSwitch -Name 'ConvergedSwitch' ``
+      -NetAdapterName 'NIC1','NIC2' ``
+      -EnableEmbeddedTeaming `$true ``
+      -AllowManagementOS `$false
+  
+  # Add management vNIC
+  Add-VMNetworkAdapter -ManagementOS -Name 'Management' -SwitchName 'ConvergedSwitch'
+  Set-VMNetworkAdapterVlan -ManagementOS -VMNetworkAdapterName 'Management' -Access -VlanId 10
+  
+  # Add storage vNICs
+  Add-VMNetworkAdapter -ManagementOS -Name 'SMB1' -SwitchName 'ConvergedSwitch'
+  Add-VMNetworkAdapter -ManagementOS -Name 'SMB2' -SwitchName 'ConvergedSwitch'
+  
+  # Configure IP addresses
+  New-NetIPAddress -InterfaceAlias 'vEthernet (SMB1)' -IPAddress 10.0.1.1 -PrefixLength 24
+  New-NetIPAddress -InterfaceAlias 'vEthernet (SMB2)' -IPAddress 10.0.2.1 -PrefixLength 24
+"@ -ForegroundColor Gray
+
+    Write-Step "Enable RDMA on vNICs"
+    Write-Host @"
+  # Enable RDMA on storage vNICs
+  Enable-NetAdapterRdma -Name 'vEthernet (SMB1)'
+  Enable-NetAdapterRdma -Name 'vEthernet (SMB2)'
+  
+  # Verify RDMA
+  Get-NetAdapterRdma | Format-Table Name, Enabled
+  Get-SmbClientNetworkInterface | Format-Table FriendlyName, RdmaCapable, LinkSpeed
+"@ -ForegroundColor Gray
+
+    Write-Step "Configure QoS for Storage Traffic"
+    Write-Host @"
+  # Create QoS policy for SMB Direct
+  New-NetQosPolicy -Name 'SMB' -NetDirectPortMatchCondition 445 -PriorityValue8021Action 3
+  
+  # Enable flow control for priority 3
+  Enable-NetQosFlowControl -Priority 3
+  
+  # Disable flow control for other priorities
+  Disable-NetQosFlowControl -Priority 0,1,2,4,5,6,7
+  
+  # Create traffic class
+  New-NetQosTrafficClass -Name 'SMB' -Priority 3 -BandwidthPercentage 50 -Algorithm ETS
+  
+  # Verify QoS configuration
+  Get-NetQosPolicy
+  Get-NetQosFlowControl
+  Get-NetQosTrafficClass
+"@ -ForegroundColor Gray
+
+    Write-Step "Configure Jumbo Frames"
+    Write-Host @"
+  # Set MTU to 9014 for storage adapters
+  Get-NetAdapterAdvancedProperty -Name 'vEthernet (SMB*)' -RegistryKeyword '*JumboPacket' |
+      Set-NetAdapterAdvancedProperty -RegistryValue 9014
+  
+  # Verify MTU
+  Get-NetAdapter 'vEthernet (SMB*)' | Get-NetAdapterAdvancedProperty -RegistryKeyword '*JumboPacket'
+"@ -ForegroundColor Gray
+
+    Write-Step "Test S2D Network Performance"
+    Write-Host @"
+  # Test RDMA connectivity
+  Test-NetConnection -ComputerName NODE2 -Port 445
+  
+  # Verify SMB Multichannel
+  Get-SmbMultichannelConnection -IncludeNotSelected
+  
+  # Test SMB bandwidth
+  # Copy large file and monitor:
+  Get-SmbClientNetworkInterface
+  Get-Counter '\SMB Client Shares(*)\*'
+"@ -ForegroundColor Gray
+
+    Write-Host "`n" + "="*80 -ForegroundColor Cyan
+    Write-Host "[SUCCESS] S2D Networking Configuration Complete" -ForegroundColor Green
+
 } catch {
-    Write-Host "[ERROR] $_" -ForegroundColor Red
-    Write-Host $_.ScriptStackTrace -ForegroundColor Red
+    Write-Host "`n[ERROR] $_" -ForegroundColor Red
     exit 1
 }
-
-Write-Host "Demo completed successfully!" -ForegroundColor Green
-Write-Host "Next Steps: Implement in production environment with proper change management" -ForegroundColor Yellow

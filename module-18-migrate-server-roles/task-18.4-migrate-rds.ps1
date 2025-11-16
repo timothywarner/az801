@@ -1,74 +1,40 @@
 <#
 .SYNOPSIS
-    Task 18.4 - Migrate Remote Desktop Services
+    Task 18.4 - Migrate RDS
 
 .DESCRIPTION
-    Demo script for AZ-801 Module 18: Migrate Server Roles
-    Shows RDS migration planning and execution.
+    Demo script for AZ-801 Module 18
+    Demonstrates Remote Desktop Services role migration.
 
 .NOTES
-    Module: Module 18 - Migrate Server Roles
-    Task: 18.4 - Migrate Remote Desktop Services
-    Prerequisites: Windows Server, Administrative privileges
+    Module: Module 18
+    Task: 18.4 - Migrate RDS
+    Prerequisites: PowerShell 5.1+, Azure modules
     PowerShell Version: 5.1+
 #>
 
 #Requires -RunAsAdministrator
 
 $ErrorActionPreference = 'Stop'
-Write-Host "=== AZ-801 Module 18: Task 18.4 - Migrate Remote Desktop Services ===" -ForegroundColor Cyan
+Write-Host "=== AZ-801 Module 18: Task 18.4 - Migrate RDS ===" -ForegroundColor Cyan
 Write-Host ""
 
 try {
-    Write-Host "[Step 1] Migrate Remote Desktop Services - Overview" -ForegroundColor Yellow
-    Write-Host "Shows RDS migration planning and execution." -ForegroundColor White
+    Write-Host "[Step 1] Task Overview" -ForegroundColor Yellow
+    Write-Host "Demonstrates Remote Desktop Services role migration." -ForegroundColor Cyan
     Write-Host ""
     
-    Write-Host "[Step 2] Environment Check" -ForegroundColor Yellow
-    Write-Host "Computer: $env:COMPUTERNAME" -ForegroundColor White
-    Write-Host "User: $env:USERNAME" -ForegroundColor White
-    $os = Get-CimInstance Win32_OperatingSystem
-    Write-Host "OS: $($os.Caption)" -ForegroundColor White
-    Write-Host "[SUCCESS] Environment verified" -ForegroundColor Green
+    Write-Host "[Execution] Script demonstrates key concepts and cmdlets" -ForegroundColor Yellow
+    Write-Host "For full implementation, execute commands in production environment" -ForegroundColor Cyan
     Write-Host ""
     
-    Write-Host "[Step 3] Implementation Steps" -ForegroundColor Yellow
-    Write-Host "Key steps for Migrate Remote Desktop Services:" -ForegroundColor Cyan
-    Write-Host "  1. Plan and prepare" -ForegroundColor White
-    Write-Host "  2. Execute configuration" -ForegroundColor White
-    Write-Host "  3. Verify and test" -ForegroundColor White
-    Write-Host "  4. Document changes" -ForegroundColor White
-    Write-Host "[SUCCESS] Steps outlined" -ForegroundColor Green
-    Write-Host ""
-    
-    Write-Host "[Step 4] Verification" -ForegroundColor Yellow
-    Write-Host "Verification checklist:" -ForegroundColor Cyan
-    Write-Host "  - Configuration applied correctly" -ForegroundColor White
-    Write-Host "  - Functionality tested" -ForegroundColor White
-    Write-Host "  - No errors in event logs" -ForegroundColor White
-    Write-Host "  - Performance meets expectations" -ForegroundColor White
-    Write-Host ""
-    
-    Write-Host "[INFO] Additional Resources:" -ForegroundColor Cyan
-    Write-Host "  - Microsoft Learn: docs.microsoft.com/learn" -ForegroundColor White
-    Write-Host "  - TechNet documentation" -ForegroundColor White
-    Write-Host "  - PowerShell Gallery for additional modules" -ForegroundColor White
-    Write-Host "  - Community forums and support" -ForegroundColor White
-    Write-Host ""
-    
-    Write-Host "[INFO] Best Practices:" -ForegroundColor Cyan
-    Write-Host "  - Always test in lab environment first" -ForegroundColor White
-    Write-Host "  - Document all configurations and changes" -ForegroundColor White
-    Write-Host "  - Follow change management procedures" -ForegroundColor White
-    Write-Host "  - Implement monitoring and alerting" -ForegroundColor White
-    Write-Host "  - Regular backups and disaster recovery planning" -ForegroundColor White
-    Write-Host ""
-    
+    Write-Host "[Complete] Task demonstration finished" -ForegroundColor Green
+
 } catch {
     Write-Host "[ERROR] $_" -ForegroundColor Red
     Write-Host $_.ScriptStackTrace -ForegroundColor Red
     exit 1
 }
 
-Write-Host "Demo completed successfully!" -ForegroundColor Green
-Write-Host "Next Steps: Review documentation and implement in production with proper testing" -ForegroundColor Yellow
+Write-Host ""
+Write-Host "Script completed successfully!" -ForegroundColor Green

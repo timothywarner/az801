@@ -3,13 +3,12 @@
     Task 12.1 - Configure Hyper-V Replication
 
 .DESCRIPTION
-    Demo script for AZ-801 Module 12: Protect VMs with Hyper-V Replication
-    Demonstrates Hyper-V Replica setup and configuration.
+    Configure Hyper-V Replica for VM disaster recovery and business continuity.
 
 .NOTES
     Module: Module 12 - Protect VMs with Hyper-V Replication
     Task: 12.1 - Configure Hyper-V Replication
-    Prerequisites: Windows Server, Administrative privileges
+    Prerequisites: Hyper-V role installed
     PowerShell Version: 5.1+
 #>
 
@@ -17,47 +16,89 @@
 
 $ErrorActionPreference = 'Stop'
 Write-Host "=== AZ-801 Module 12: Task 12.1 - Configure Hyper-V Replication ===" -ForegroundColor Cyan
-Write-Host ""
+
+function Write-Step { param([string]$Message); Write-Host "`n[STEP] $Message" -ForegroundColor Yellow }
 
 try {
-    Write-Host "[Step 1] Configure Hyper-V Replication - Overview" -ForegroundColor Yellow
-    Write-Host "Demonstrates Hyper-V Replica setup and configuration." -ForegroundColor White
-    Write-Host ""
-    
-    Write-Host "[Step 2] Prerequisites Check" -ForegroundColor Yellow
-    Write-Host "Checking prerequisites for Configure Hyper-V Replication..." -ForegroundColor Cyan
-    Write-Host "  - Administrative privileges: Verified" -ForegroundColor White
-    Write-Host "  - Required features: Ready" -ForegroundColor White
-    Write-Host "[SUCCESS] Prerequisites verified" -ForegroundColor Green
-    Write-Host ""
-    
-    Write-Host "[Step 3] Configuration Steps" -ForegroundColor Yellow
-    Write-Host "Configuring Configure Hyper-V Replication..." -ForegroundColor Cyan
-    Write-Host "  Step 1: Review current configuration" -ForegroundColor White
-    Write-Host "  Step 2: Apply required settings" -ForegroundColor White
-    Write-Host "  Step 3: Verify configuration" -ForegroundColor White
-    Write-Host "[SUCCESS] Configuration steps outlined" -ForegroundColor Green
-    Write-Host ""
-    
-    Write-Host "[Step 4] Verification and Testing" -ForegroundColor Yellow
-    Write-Host "Verification steps:" -ForegroundColor Cyan
-    Write-Host "  - Test functionality" -ForegroundColor White
-    Write-Host "  - Verify expected behavior" -ForegroundColor White
-    Write-Host "  - Review logs and events" -ForegroundColor White
-    Write-Host ""
-    
-    Write-Host "[INFO] Best Practices:" -ForegroundColor Cyan
-    Write-Host "  - Regular monitoring and maintenance" -ForegroundColor White
-    Write-Host "  - Documentation of all changes" -ForegroundColor White
-    Write-Host "  - Testing in non-production environment" -ForegroundColor White
-    Write-Host "  - Following vendor recommendations" -ForegroundColor White
-    Write-Host ""
-    
+    Write-Step "Understanding Hyper-V Replica"
+    Write-Host "  - Asynchronous replication for DR" -ForegroundColor White
+    Write-Host "  - Block-level replication over HTTP/HTTPS" -ForegroundColor White
+    Write-Host "  - Support for Kerberos and Certificate authentication" -ForegroundColor White
+    Write-Host "  - Recovery points: 15 min to 24 hours" -ForegroundColor White
+
+    Write-Step "Enable Hyper-V Replica on Server"
+    Write-Host @"
+  # Configure as replica server
+  Set-VMReplicationServer -ReplicationEnabled `$true ``
+      -AllowedAuthenticationType Kerberos ``
+      -KerberosAuthenticationPort 80 ``
+      -ReplicationAllowedFromAnyServer `$true ``
+      -DefaultStorageLocation 'D:\ReplicaStorage'
+  
+  # Or use certificate authentication (more secure)
+  Set-VMReplicationServer -ReplicationEnabled `$true ``
+      -AllowedAuthenticationType Certificate ``
+      -CertificateAuthenticationPort 443 ``
+      -CertificateThumbprint '1234567890ABCDEF...' ``
+      -DefaultStorageLocation 'D:\ReplicaStorage'
+  
+  # View configuration
+  Get-VMReplicationServer
+"@ -ForegroundColor Gray
+
+    Write-Step "Configure Firewall for Replication"
+    Write-Host @"
+  # Enable firewall rules for HTTP (Kerberos)
+  Enable-NetFirewallRule -DisplayName 'Hyper-V Replica HTTP Listener (TCP-In)'
+  
+  # Or for HTTPS (Certificate)
+  Enable-NetFirewallRule -DisplayName 'Hyper-V Replica HTTPS Listener (TCP-In)'
+  
+  # Verify firewall rules
+  Get-NetFirewallRule -DisplayName '*Hyper-V Replica*' | Format-Table Name, Enabled
+"@ -ForegroundColor Gray
+
+    Write-Step "Configure Replication Authorization"
+    Write-Host @"
+  # Add authorization entry (allow specific servers)
+  New-VMReplicationAuthorizationEntry ``
+      -AllowedPrimaryServer '*.contoso.com' ``
+      -ReplicaStorageLocation 'D:\ReplicaStorage' ``
+      -TrustGroup 'Production'
+  
+  # View authorization entries
+  Get-VMReplicationAuthorizationEntry
+  
+  # Remove authorization
+  Remove-VMReplicationAuthorizationEntry -AllowedPrimaryServer '*.contoso.com'
+"@ -ForegroundColor Gray
+
+    Write-Step "Test Replication Connectivity"
+    Write-Host @"
+  # Test connectivity to replica server
+  Test-NetConnection -ComputerName REPLICA-SERVER -Port 80  # or 443 for HTTPS
+  
+  # Verify Hyper-V Replica service
+  Get-Service vmms
+  
+  # Check event logs
+  Get-WinEvent -LogName 'Microsoft-Windows-Hyper-V-VMMS-Admin' -MaxEvents 20 |
+      Where-Object Message -like '*replica*'
+"@ -ForegroundColor Gray
+
+    Write-Step "Replication Best Practices"
+    Write-Host "  1. Use certificate authentication for internet scenarios" -ForegroundColor White
+    Write-Host "  2. Separate replication network from production" -ForegroundColor White
+    Write-Host "  3. Use compression for WAN replication" -ForegroundColor White
+    Write-Host "  4. Plan storage capacity (replica = 2x VM size)" -ForegroundColor White
+    Write-Host "  5. Test failover regularly" -ForegroundColor White
+    Write-Host "  6. Monitor replication health" -ForegroundColor White
+    Write-Host "  7. Use extended replication for 3-site DR" -ForegroundColor White
+
+    Write-Host "`n" + "="*80 -ForegroundColor Cyan
+    Write-Host "[SUCCESS] Hyper-V Replication Configuration Complete" -ForegroundColor Green
+
 } catch {
-    Write-Host "[ERROR] $_" -ForegroundColor Red
-    Write-Host $_.ScriptStackTrace -ForegroundColor Red
+    Write-Host "`n[ERROR] $_" -ForegroundColor Red
     exit 1
 }
-
-Write-Host "Demo completed successfully!" -ForegroundColor Green
-Write-Host "Next Steps: Implement in production environment with proper change management" -ForegroundColor Yellow
